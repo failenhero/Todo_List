@@ -1,0 +1,39 @@
+<div class="container">
+
+  <mat-card>
+
+    <h2>Todo List</h2>
+
+    <div class="todos">
+
+      <ul *ngFor="let todo of TodoList">
+        <li>
+          <span>{{todo.text}}</span>
+
+          <div class="buttons">
+            <button>excl</button>
+            <button
+              (click)="deleteTodo(todo.id)">del</button>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+
+    <form [formGroup]="addTodoForm" (ngSubmit)="addTodo()">
+
+      <input formControlName="todoName">
+
+      <button
+        type="submit"
+        [disabled]="addTodoForm.invalid">
+        add todo
+      </button>
+
+    </form>
+
+  </mat-card>
+
+</div>
+
+

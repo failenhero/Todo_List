@@ -57,15 +57,19 @@ namespace web_api.Controllers
             return oldTodo;
         }
 
-        [HttpDelete]
-        [Route("deletetodo")]
-        public async Task<ActionResult<TodoItem>> DeleteTodo(TodoItem item)
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<TodoItem>> DeleteTodo(int id)
         {
-            db.TodoList.Remove(item);
+            TodoItem itemToDelete = await db.TodoList.FirstOrDefaultAsync(todo => todo.Id == id);
+
+            if (itemToDelete == null)
+                return NotFound();
+
+            db.TodoList.Remove(itemToDelete);
 
             await db.SaveChangesAsync();
 
-            return item;
+            return itemToDelete;
         }
     }
 }
