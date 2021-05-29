@@ -10,7 +10,9 @@ export class HttpService {
 
   private readonly baseURL: string = 'https://localhost:5001/';
   private readonly getTodosUrl: string = `${this.baseURL}api/Todo`;
-  private readonly addTodoUrl: string = `${this.getTodosUrl}/addnewtodo`
+
+  private readonly addTodoUrl: string = `${this.getTodosUrl}/addnewtodo`;
+  private readonly putTodoUrl: string = `${this.getTodosUrl}/puttodo`;
   private readonly removeTodosUrl: string = `${this.getTodosUrl}/delete`;
 
   constructor(
@@ -22,7 +24,11 @@ export class HttpService {
   }
 
   addTodo(newtodo: any) {
-    return this.http.post(this.addTodoUrl, newtodo)
+    return this.http.post(this.addTodoUrl, newtodo);
+  }
+
+  putTodo(newtodo: Todo) {
+    return this.http.put(this.putTodoUrl, newtodo);
   }
 
   deleteTodo(id: number) {

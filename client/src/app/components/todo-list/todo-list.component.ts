@@ -11,7 +11,10 @@ import { HttpService } from 'src/app/services/http.service';
 export class TodoListComponent implements OnInit {
 
   public TodoList = [] as Todo[];
+  public DoneList = [] as Todo[];
   public addTodoForm!: FormGroup;
+
+  public inputValue: string = '';
 
   constructor(
     private httpService: HttpService
@@ -36,6 +39,7 @@ export class TodoListComponent implements OnInit {
     this.httpService.getTodoList().subscribe(res => {
       console.log(res);
       this.TodoList = res;
+      this.DoneList = res.filter(done => done.isDone == true);
     }, error => {
       console.log(error)
     });
@@ -47,14 +51,46 @@ export class TodoListComponent implements OnInit {
     });
   }
 
+  markAsImportant(todo: Todo) {
+    let newImportantStatus: boolean = !todo.isImportant;
+
+    let newTodo = {
+      id: todo.id,
+      text: todo.text,
+      isImportant: newImportantStatus,
+      isDone: todo.isDone
+    };
+
+    this.httpService.putTodo(newTodo).subscribe(res => {
+      this.getTodoList();
+    })
+  }
+
   addTodo() {
     let newTodo = {
       Text:this._newTodoName
     }
 
+    this.addTodoForm.reset();
+
     this.httpService.addTodo(newTodo).subscribe(res => {
       this.getTodoList();
     });
+  }
+
+  changeDoneStatus(todo: Todo) {
+    let newDoneStatus: boolean = !todo.isDone;
+
+    let newTodo = {
+      id: todo.id,
+      text: todo.text,
+      isImportant: todo.isImportant,
+      isDone: newDoneStatus
+    };
+
+    this.httpService.putTodo(newTodo).subscribe(res => {
+      this.getTodoList();
+    })
   }
 
   get _newTodoName() {

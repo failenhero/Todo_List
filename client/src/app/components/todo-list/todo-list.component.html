@@ -1,38 +1,80 @@
 <div class="container">
 
-  <mat-card>
-
-    <h2>Todo List</h2>
+  <!-- <mat-card class="card"> -->
 
     <div class="todos">
 
-      <ul *ngFor="let todo of TodoList">
-        <li>
-          <span>{{todo.text}}</span>
+      <table>
 
-          <div class="buttons">
-            <button>excl</button>
-            <button
-              (click)="deleteTodo(todo.id)">del</button>
-          </div>
-        </li>
-      </ul>
+        <thead>
+          <th class="header">
+
+            <h1>Todo List</h1>
+
+          </th>
+
+          <th class="indicators">
+            <div>
+              {{TodoList.length - DoneList.length}} <span class="indicator">to do</span>
+            </div>
+            <div>
+              {{DoneList.length}} <span class="indicator">done</span>
+            </div>
+          </th>
+
+        </thead>
+
+        <tbody *ngFor="let todo of TodoList">
+          <tr>
+
+            <td
+              [ngClass]="{
+                'done': todo.isDone,
+                'important': todo.isImportant
+              }">
+
+              <span (click)="changeDoneStatus(todo)">
+              {{todo.text}}
+              </span>
+
+            </td>
+
+            <td class="buttons">
+              <button
+                mat-mini-fab color="primary"
+                (click)="markAsImportant(todo)">
+                <mat-icon>flag</mat-icon>
+              </button>
+              <button
+                mat-mini-fab color="primary"
+                (click)="deleteTodo(todo.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+
+          </tr>
+        </tbody>
+
+      </table>
 
     </div>
 
     <form [formGroup]="addTodoForm" (ngSubmit)="addTodo()">
 
-      <input formControlName="todoName">
+      <mat-form-field>
+        <input matInput type="text" formControlName="todoName">
+      </mat-form-field>
 
       <button
+        mat-raised-button color="primary"
         type="submit"
         [disabled]="addTodoForm.invalid">
-        add todo
+        <mat-icon>add</mat-icon>
       </button>
 
     </form>
 
-  </mat-card>
+  <!-- </mat-card> -->
 
 </div>
 
